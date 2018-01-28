@@ -8,6 +8,7 @@ function Word(value){
 	this.letterObjectArray = _factory(value);	
 	this.current = false;
 	this.won = false;
+	this.played = false;
 	const guessed_letters=[];
 	this.display = function(){
 		return this.letterObjectArray.map(letter => letter.display()).join("");
@@ -22,6 +23,9 @@ function Word(value){
 			return guessed_letters;
 		}
 	};
+	this.hasWon = function(){
+		return !this.letterObjectArray.some(letter => letter.guessed===false);
+	}
 };
 
 module.exports = Word;
