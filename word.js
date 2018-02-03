@@ -9,7 +9,11 @@ function Word(value){
 	this.current = false;
 	this.won = false;
 	this.played = false;
+	this.current_guess_count = 0;
 	const guessed_letters=[];
+	this.max_guess_count = function(){
+		return this.letterObjectArray.map(letter => letter.isLetter()).length/3;
+	}
 	this.display = function(){
 		return this.letterObjectArray.map(letter => letter.display()).join("");
 	};
@@ -17,14 +21,24 @@ function Word(value){
 		guess = guess.trim();
 		if(guessed_letters.indexOf(guess) === -1){
 			guessed_letters.push(guess);
-			this.letterObjectArray.forEach(letter => letter.isMatch(guess));
+			let match_array = this.letterObjectArray.map(letter => letter.isMatch(guess));
+			console.log("** Here is the match some function: ", match_array.some(match => match));
+			if(!match_array.some(match => match)){
+				this.current_guess_count++;
+			}
 			return guessed_letters;
 		}else{
 			return guessed_letters;
 		}
 	};
 	this.hasWon = function(){
-		return !this.letterObjectArray.some(letter => letter.guessed===false);
+		let correct_guesses = this.letterObjectArray.map(function(letter){
+			return letter.isLetter() && letter.guessed===false;
+		});
+		return !correct_guesses.some(guess => guess===false);
+	};
+	this.hasLost = function(){
+		return this.current_guess_count >= this.max_guess_count;
 	}
 };
 

@@ -7,16 +7,25 @@ function Letter(value, placeholder = "_"){
 		if(this.guessed){
 			return this.value;
 		}else{
-			return this.placeholder;
+			if(this.isLetter()){
+				return this.placeholder;
+			}else{
+				return this.value;
+			}
+			
 		}
-	}
+	};
 	this.isMatch = function (letter){
 		const match = letter.trim().toLowerCase() === this.value.toLowerCase();
 		if(match){
 			this.guessed = match;
 		}
 		return match;
+	};
+	this.isLetter = function(){
+		return this.value.match(/[a-z]/i)
 	}
 };
+
 
 module.exports = Letter;

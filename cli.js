@@ -33,7 +33,7 @@ function play(game){
 				//source: https://stackoverflow.com/questions/9862761/how-to-check-if-character-is-a-letter-in-javascript
 				let isValid = letter.length === 1 && letter.match(/[a-z]/i) != null;
 				if(!isValid){
-					console.log("\n [ Only input one letter at a time. No numbers or special characters. ]")
+					console.log("\n [ Only input one letter at a time. No numbers, or special characters. ]")
 				}
 				return isValid
 			}
@@ -41,11 +41,27 @@ function play(game){
 	]).then(answers => {
  		let guessed_letter = current_word.guess(answers.letter);
  		console.log(current_word.display());
+ 		console.log("( "+current_word.current_guess_count+" / "+current_word.max_guess_count()+" )");
+ 	
  		console.log(guessed_letter.toString());
+ 		let start_new_game = false;
  		//TODO: Has lost and score, display gueses left, display score
- 		if(current_word.hasWon()){
- 			console.log("\n ** You Won! **");
- 			current_word.current = false;
+ 		console.log("Has lost? ", current_word.hasLost());
+ 		console.log("Has won? ", current_word.hasWon())
+ 		if(current_word.hasLost()===false){
+	 		if(current_word.hasWon()){
+	 			console.log("\n ** You Won! **");
+	 			start_new_game = true;
+	 		}else{
+	 			play(game);
+	 		}
+	 	}else{
+	 		console.log("\n ** You Lost! **");
+	 		start_new_game = true;
+	 	}
+
+	 	if(start_new_game){
+	 		current_word.current = false;
  			current_word.won = true;
  			current_word.played = true;
  			let new_word_set = game.set_new_current();
@@ -56,15 +72,18 @@ function play(game){
  			}else{
  				console.log("\n **** Game Over ****");
  			}
- 		}else{
- 			play(game);
- 		}
+	 	}
+
 	});
 }
 
+
+				
+
+
 //TODO: move to index.js?
 //TODO: updated word array and handle special characters
-const word_array = ["clayton", "Everley"];
+const word_array = ["clayton's CAR - hi", "Everley Thompson"];
 const game = new Game(word_array);
 console.log("///////////////////");
 console.log("**** Welcome to Hangman ****");
