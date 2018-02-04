@@ -12,7 +12,7 @@ function Word(value){
 	this.current_guess_count = 0;
 	const guessed_letters=[];
 	this.max_guess_count = function(){
-		return this.letterObjectArray.map(letter => letter.isLetter()).length/3;
+		return Math.round(this.letterObjectArray.map(letter => letter.isLetter()).length/2);
 	}
 	this.display = function(){
 		return this.letterObjectArray.map(letter => letter.display()).join("");
@@ -22,7 +22,6 @@ function Word(value){
 		if(guessed_letters.indexOf(guess) === -1){
 			guessed_letters.push(guess);
 			let match_array = this.letterObjectArray.map(letter => letter.isMatch(guess));
-			console.log("** Here is the match some function: ", match_array.some(match => match));
 			if(!match_array.some(match => match)){
 				this.current_guess_count++;
 			}
@@ -32,13 +31,26 @@ function Word(value){
 		}
 	};
 	this.hasWon = function(){
-		let correct_guesses = this.letterObjectArray.map(function(letter){
-			return letter.isLetter() && letter.guessed===false;
+		let letters_left_to_guess = this.letterObjectArray.filter(function(letter){
+			if(letter.isLetter() && !letter.guessed){
+				return letter
+			};
 		});
-		return !correct_guesses.some(guess => guess===false);
+		return letters_left_to_guess.length === 0;
 	};
 	this.hasLost = function(){
-		return this.current_guess_count >= this.max_guess_count;
+
+		return this.wrongGuesses().length >= this.max_guess_count();
+	};
+	this.wrongGuesses = function(){
+		let correct_letter_array = this.letterObjectArray.map(letter => letter.value.toLowerCase());
+		let wrong_letter_array = [];
+		guessed_letters.forEach(function(letter){
+			if(correct_letter_array.indexOf(letter.toLowerCase()) === -1){
+				wrong_letter_array.push(letter);
+			}
+		});
+		return wrong_letter_array;
 	}
 };
 

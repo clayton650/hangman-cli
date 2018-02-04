@@ -23,7 +23,7 @@ function Letter(value, placeholder = "_"){
 		return match;
 	};
 	this.isLetter = function(){
-		return this.value.match(/[a-z]/i)
+		return this.value.match(/[a-z]/i) != null;
 	}
 };
 

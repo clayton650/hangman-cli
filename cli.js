@@ -41,13 +41,17 @@ function play(game){
 	]).then(answers => {
  		let guessed_letter = current_word.guess(answers.letter);
  		console.log(current_word.display());
- 		console.log("( "+current_word.current_guess_count+" / "+current_word.max_guess_count()+" )");
- 	
- 		console.log(guessed_letter.toString());
+ 		//console.log(current_word.max_guess_count());
+ 		//console.log(current_word.wrongGuesses());
+ 		let total_guess_count = current_word.max_guess_count();
+ 		let wrong_guess_count = current_word.wrongGuesses().length;
+ 		let guesses_left = total_guess_count-wrong_guess_count;
+
+ 		console.log("Wrong guesses left: "+guesses_left+" (Total: "+total_guess_count+")");
+ 		console.log("Wrong guesses ("+wrong_guess_count+"): "+current_word.wrongGuesses().toString());
+
  		let start_new_game = false;
  		//TODO: Has lost and score, display gueses left, display score
- 		console.log("Has lost? ", current_word.hasLost());
- 		console.log("Has won? ", current_word.hasWon())
  		if(current_word.hasLost()===false){
 	 		if(current_word.hasWon()){
 	 			console.log("\n ** You Won! **");
@@ -83,7 +87,7 @@ function play(game){
 
 //TODO: move to index.js?
 //TODO: updated word array and handle special characters
-const word_array = ["clayton's CAR - hi", "Everley Thompson"];
+const word_array = ["hire clayton", "Portola Valley", "another-word"];
 const game = new Game(word_array);
 console.log("///////////////////");
 console.log("**** Welcome to Hangman ****");
