@@ -87,7 +87,7 @@ function play(game){
 
 //TODO: move to index.js?
 //TODO: updated word array and handle special characters
-const word_array = ["hire clayton"]//, "Portola Valley", "another-word"];
+const word_array = ["hire clayton", "Portola Valley", "another-word"];
 const game = new Game(word_array);
 console.log("///////////////////");
 console.log("**** Welcome to Hangman ****");
